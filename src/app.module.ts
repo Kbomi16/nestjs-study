@@ -3,6 +3,10 @@ import { BoardsModule } from './boards/boards.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { typeORMConfig } from './configs/typeorm.config'
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), BoardsModule]
+  imports: [
+    // TypeOrmModule.forRoot(typeORMConfig),
+    TypeOrmModule.forRootAsync(typeORMConfig),
+    BoardsModule
+  ]
 })
 export class AppModule {}
