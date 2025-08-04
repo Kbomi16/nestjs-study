@@ -1,6 +1,10 @@
 import { Auth, DataSource, Repository } from 'typeorm'
 import { User } from './entities/user.entity'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException
+} from '@nestjs/common'
 import * as bcrypt from 'bcryptjs'
 
 export class UserRepository extends Repository<User> {
@@ -23,7 +27,9 @@ export class UserRepository extends Repository<User> {
       await this.save(user)
     } catch (error) {
       if (error.code === '23505') {
-        throw new Error('Username already exists')
+        console.log(error)
+        throw new HttpException('Username already exists', 400)
+        // throw new Error('Username already exists')
       }
       throw new InternalServerErrorException()
     }
