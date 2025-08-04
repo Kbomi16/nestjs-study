@@ -14,8 +14,10 @@ import { AuthService } from './auth.service'
 import { AuthCredentialsDto } from './dto/auth-credential.dto'
 import { User } from './entities/user.entity'
 import { AuthGuard } from '@nestjs/passport'
+import { GetUser } from './get-user.decorator'
 
 @Controller('auth')
+@UseGuards(AuthGuard())
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -35,7 +37,7 @@ export class AuthController {
 
   @Post('/test')
   @UseGuards(AuthGuard())
-  test(@Req() req) {
-    console.log(req) // JWT가 검증되면 user 정보가 들어있음
+  test(@GetUser() user: User) {
+    console.log(user) // JWT가 검증되면 user 정보가 들어있음
   }
 }

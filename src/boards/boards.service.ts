@@ -6,6 +6,7 @@ import { BoardRepository } from './board.repository'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Board } from './board.entity'
 import { Repository } from 'typeorm'
+import { User } from 'src/auth/entities/user.entity'
 
 @Injectable()
 export class BoardsService {
@@ -36,13 +37,16 @@ export class BoardsService {
   }
 
   // ! 게시물 POST
-  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    user: User
+  ): Promise<Board> {
     return this.boardRepository.create(createBoardDto)
   }
 
   // ! 게시물 DELETE
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id)
+  async deleteBoard(id: number, user: User): Promise<void> {
+    const result = await this.boardRepository.delete({ id, user })
 
     if (result.affected === 0) {
       throw new NotFoundException(`Can't find Board with id ${id}`)
