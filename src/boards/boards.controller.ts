@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -20,11 +21,13 @@ import { GetUser } from 'src/auth/get-user.decorator'
 
 @Controller('boards')
 export class BoardsController {
+  private logger = new Logger('BoardsController')
   constructor(private boardsService: BoardsService) {}
 
   // ! 게시물 전체 GET
   @Get()
   getAllBoards(): Promise<Board[]> {
+    this.logger.verbose('Retrieving all boards')
     return this.boardsService.getAllBoards()
   }
 
